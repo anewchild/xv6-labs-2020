@@ -41,7 +41,7 @@ find(char *path,const char *str)
         fprintf(2,"find: cannot stat %s\n", buf);
         continue;
       }
-      if(st.size == T_DIR && strcmp(p,".") != 0 && strcmp(p,"..") != 0){
+      if(st.type == T_DIR && strcmp(p,".") != 0 && strcmp(p,"..") != 0){
         find(buf,str);
       }
       else if(strcmp(str,p) == 0){
