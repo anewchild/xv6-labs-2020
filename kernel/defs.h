@@ -158,8 +158,13 @@ void            uartputc_sync(int);
 int             uartgetc(void);
 
 // vm.c
+// void u2kvmcopy(pagetable_t pagetable, pagetable_t kernelpt, uint64 oldsz, uint64 newsz);
+int proc_pagetable_copy(pagetable_t old, pagetable_t new, uint64 begin, uint64 end);
 void            kvminit(void);
+void uvmmap(pagetable_t pagetable, uint64 va, uint64 pa, uint64 sz, int perm);
+pagetable_t     proc_kpt_init(void); // 用于内核页表的初始化
 void            kvminithart(void);
+void            proc_inithart(pagetable_t); // 将进程的内核页表保存到SATP寄存器
 uint64          kvmpa(uint64);
 void            kvmmap(uint64, uint64, uint64, int);
 int             mappages(pagetable_t, uint64, uint64, uint64, int);
@@ -178,7 +183,11 @@ uint64          walkaddr(pagetable_t, uint64);
 int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
+void            vmprint(pagetable_t pagetable);
 
+// vmcopyin.c
+int             copyin_new(pagetable_t, char *, uint64, uint64);
+int             copyinstr_new(pagetable_t, char *, uint64, uint64);
 // plic.c
 void            plicinit(void);
 void            plicinithart(void);
